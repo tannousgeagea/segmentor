@@ -1,0 +1,54 @@
+# Segmentor Configuration
+
+model:
+  name: "sam_v1"  # sam_v1 | sam_v2
+  encoder_variant: "vit_h"  # vit_h | vit_l | vit_b
+  checkpoint_path: null  # Auto-download if null
+
+runtime:
+  backend: "torch"  # torch | onnx
+  device: "cuda"  # cuda | cpu | cuda:0
+  precision: "fp32"  # fp16 | bf16 | fp32
+  batch_size: 1
+  deterministic: true
+  seed: 42
+
+tiling:
+  enabled: false
+  tile_size: 1024
+  stride: 256
+  blend_mode: "linear"  # linear | average
+
+outputs:
+  default_formats: ["rle"]  # rle | png | polygons | numpy
+  include_overlay: false
+  min_area_ratio: 0.001  # Remove masks smaller than this
+
+thresholds:
+  mask_threshold: 0.5
+  iou_threshold: 0.88
+
+postprocess:
+  remove_small_components: true
+  morphological_closing: false
+  closing_kernel_size: 3
+
+cache:
+  enabled: true
+  max_items: 100
+  ttl_seconds: 3600
+
+server:
+  host: "0.0.0.0"
+  port: 8080
+  workers: 1
+  cors_origins: ["*"]
+  api_keys: []  # Empty = no auth
+  max_image_size_mb: 20
+  max_image_dimension: 8000
+  request_timeout: 30
+
+logging:
+  level: "INFO"  # DEBUG | INFO | WARNING | ERROR
+  format: "json"  # json | text
+  log_file: null
