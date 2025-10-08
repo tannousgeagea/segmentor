@@ -44,14 +44,42 @@ class Segmentor:
         if config is None:
             config = SegmentorConfig()
 
+        # Apply kwargs overrides with smart mapping
+        # Common shortcuts for user convenience
+        shortcuts = {
+            "model": ("model", "name"),
+            "backend": ("runtime", "backend"),
+            "device": ("runtime", "device"),
+            "precision": ("runtime", "precision"),
+            "batch_size": ("runtime", "batch_size"),
+            "checkpoint_path": ("model", "checkpoint_path"),
+            "encoder_variant": ("model", "encoder_variant"),
+        }
+
         # Apply kwargs overrides
         for key, value in kwargs.items():
             if "." in key:
                 section, field = key.split(".", 1)
                 if hasattr(config, section):
                     setattr(getattr(config, section), field, value)
-            elif hasattr(config.runtime, key):
-                setattr(config.runtime, key, value)
+            elif key in shortcuts:
+                # Use shortcut mapping
+                section_name, field_name = shortcuts[key]
+                section = getattr(config, section_name)
+                setattr(section, field_name, value)
+            else:
+                # Try to find which config section this key belongs to
+                applied = False
+                for section_name in ["model", "runtime", "tiling", "outputs", "thresholds", 
+                                     "postprocess", "cache", "server", "logging"]:
+                    section = getattr(config, section_name, None)
+                    if section and hasattr(section, key):
+                        setattr(section, key, value)
+                        applied = True
+                        break
+                
+                if not applied:
+                    logger.warning(f"Unknown config parameter: {key}")
 
         self.config = config
         self.backend: BaseSAMBackend | None = None

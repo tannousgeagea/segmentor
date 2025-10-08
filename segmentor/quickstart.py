@@ -32,7 +32,7 @@ def main() -> None:
     try:
         print("\nTesting basic segmentation...")
         config = SegmentorConfig()
-        config.runtime.device = "cpu"  # Use CPU for testing
+        config.runtime.device = "cuda"  # Use CPU for testing
 
         dummy_image = np.zeros((480, 640, 3), dtype=np.uint8)
         dummy_box = (100, 100, 300, 300)
