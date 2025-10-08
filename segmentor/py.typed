@@ -1,0 +1,2 @@
+# PEP 561 marker file for type information
+# This file signals that the package supports type checking

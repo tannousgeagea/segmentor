@@ -541,3 +541,76 @@ segmentor/
     ├── api.md
     └── config.md
 ```
+
+```markdown
+## For Package Developers
+
+### Installation for Development
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/segmentor.git
+cd segmentor
+
+# Install in editable mode with all dependencies
+pip install -e .[all]
+
+# Install pre-commit hooks
+pre-commit install
+```
+
+### Using Segmentor in Your Project
+
+**Install from PyPI (when published)**:
+```bash
+pip install segmentor[torch]
+```
+
+**Install from GitHub**:
+```bash
+pip install git+https://github.com/yourusername/segmentor.git
+```
+
+**Install specific version**:
+```bash
+pip install segmentor[torch]==0.1.0
+```
+
+**Add to requirements.txt**:
+```
+segmentor[torch]>=0.1.0
+```
+
+**Add to pyproject.toml**:
+```toml
+dependencies = [
+    "segmentor[torch]>=0.1.0",
+]
+```
+
+### Quick Integration Example
+
+```python
+# Add to your project
+from segmentor import Segmentor
+
+class MyImageProcessor:
+    def __init__(self):
+        self.segmentor = Segmentor(backend="torch", device="cuda")
+    
+    def process(self, image, box):
+        result = self.segmentor.segment_from_box(image, box)
+        return result.mask
+```
+
+### API Stability
+
+- **Stable**: Core API (`Segmentor`, `SegmentationResult`, `SegmentorConfig`)
+- **Beta**: Service endpoints may change in minor versions
+- **Experimental**: ONNX backends, tiling features
+
+### Version Compatibility
+
+| Segmentor Version | Python | PyTorch | NumPy |
+|-------------------|--------|---------|-------|
+| 0.1.x             | 3.10+  | 2.0+    | 1.24+ |

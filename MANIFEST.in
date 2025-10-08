@@ -1,0 +1,17 @@
+# Include important non-Python files in the distribution
+include README.md
+include LICENSE
+include config.yaml
+include requirements/*.txt
+
+# Include type information
+include segmentor/py.typed
+
+# Exclude unnecessary files
+exclude .gitignore
+exclude .pre-commit-config.yaml
+recursive-exclude tests *
+recursive-exclude docs *
+recursive-exclude .github *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
