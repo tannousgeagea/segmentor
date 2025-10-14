@@ -47,6 +47,34 @@ class BaseSAMBackend(Protocol):
         """
         ...
 
+    def infer_from_boxes_batch(
+        self, image: np.ndarray, boxes: list[tuple[int, int, int, int]]
+    ) -> tuple[list[np.ndarray], list[float]]:
+        """Generate masks from multiple bounding boxes efficiently.
+        
+        Args:
+            image: RGB image as numpy array (HxWx3)
+            boxes: List of bounding boxes [(x1, y1, x2, y2), ...]
+            
+        Returns:
+            Tuple of (list of binary_masks, list of confidence_scores)
+        """
+        ...
+    
+    def infer_from_points_batch(
+        self, image: np.ndarray, points_list: list[list[tuple[int, int, int]]]
+    ) -> tuple[list[np.ndarray], list[float]]:
+        """Generate masks from multiple point prompts efficiently.
+        
+        Args:
+            image: RGB image as numpy array (HxWx3)
+            points_list: List of point prompt lists
+            
+        Returns:
+            Tuple of (list of binary_masks, list of confidence_scores)
+        """
+        ...
+
     def close(self) -> None:
         """Clean up resources."""
         ...

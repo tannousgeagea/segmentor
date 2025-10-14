@@ -126,6 +126,89 @@ class TorchSAMv2Backend:
 
         except Exception as e:
             raise BackendError(f"SAM v2 inference failed: {e}") from e
+        
+    def infer_from_boxes_batch(
+        self, image: np.ndarray, boxes: list[tuple[int, int, int, int]]
+    ) -> tuple[list[np.ndarray], list[float]]:
+        """Generate masks from multiple boxes efficiently using predict_torch.
+        
+        Args:
+            image: RGB image as numpy array (HxWx3)
+            boxes: List of bounding boxes [(x1, y1, x2, y2), ...]
+            
+        Returns:
+            Tuple of (list of binary_masks, list of confidence_scores)
+        """
+        try:
+            import torch
+            
+            # Set image once (computes embedding once)
+            self.predictor.set_image(image)
+            
+            # Convert boxes to torch tensor
+            input_boxes = torch.tensor(boxes, device=self.predictor.device)
+            
+            # Transform boxes to the input frame
+            transformed_boxes = self.predictor.transform.apply_boxes_torch(
+                input_boxes, 
+                image.shape[:2]
+            )
+            
+            # Batch prediction using predict_torch
+            masks, scores, _ = self.predictor.predict_torch(
+                point_coords=None,
+                point_labels=None,
+                boxes=transformed_boxes,
+                multimask_output=False,
+            )
+            
+            # masks shape: (batch_size, 1, H, W)
+            # scores shape: (batch_size, 1)
+            
+            # Convert to list of individual masks and scores
+            mask_list = []
+            score_list = []
+            
+            for i in range(masks.shape[0]):
+                mask = masks[i, 0].cpu().numpy().astype(np.uint8)
+                mask_list.append(mask)
+                
+                score = float(scores[i, 0].cpu())
+                score_list.append(score)
+            
+            return mask_list, score_list
+            
+        except Exception as e:
+            raise BackendError(f"SAM v2 batch inference failed: {e}") from e
+
+
+    def infer_from_points_batch(
+        self, image: np.ndarray, points_list: list[list[tuple[int, int, int]]]
+    ) -> tuple[list[np.ndarray], list[float]]:
+        """Generate masks from multiple point prompts efficiently."""
+        try:
+            self.predictor.set_image(image)
+            
+            mask_list = []
+            score_list = []
+            
+            for points in points_list:
+                point_coords = np.array([[x, y] for x, y, _ in points])
+                point_labels = np.array([label for _, _, label in points])
+                
+                masks, scores, _ = self.predictor.predict(
+                    point_coords=point_coords,
+                    point_labels=point_labels,
+                    multimask_output=False,
+                )
+                
+                mask_list.append(masks[0].astype(np.uint8))
+                score_list.append(float(scores[0]))
+            
+            return mask_list, score_list
+            
+        except Exception as e:
+            raise BackendError(f"SAM v2 batch inference failed: {e}") from e
 
     def close(self) -> None:
         """Clean up resources."""

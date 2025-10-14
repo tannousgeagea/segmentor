@@ -23,6 +23,7 @@ class RuntimeConfig(BaseModel):
     device: str = "cuda"
     precision: Literal["fp16", "bf16", "fp32"] = "fp32"
     batch_size: int = 1
+    enable_batch_inference: bool = True 
     deterministic: bool = True
     seed: int = 42
 

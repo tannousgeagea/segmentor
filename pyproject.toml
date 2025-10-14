@@ -35,8 +35,6 @@ dependencies = [
 torch = [
     "torch>=2.0.0",
     "torchvision>=0.15.0",
-    "segment-anything @ git+https://github.com/facebookresearch/segment-anything.git",
-    "sam-2 @ git+https://github.com/facebookresearch/segment-anything-2.git#egg=sam-2",
 ]
 onnx = [
     "onnxruntime>=1.16.0",

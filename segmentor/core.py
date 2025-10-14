@@ -16,6 +16,7 @@ from segmentor.exceptions import BackendError, InvalidPromptError, ModelLoadErro
 from segmentor.models import SegmentationResult
 from segmentor.utils.cache import EmbeddingCache
 from segmentor.utils.image_io import load_image
+from segmentor.utils.dependency_check import ensure_dependency
 from segmentor.utils.mask_utils import (
     apply_morphology,
     mask_to_png_bytes,
@@ -96,12 +97,37 @@ class Segmentor:
 
         try:
             if backend_key == "torch_sam_v1":
+                # Check if SAM v1 is installed
+                try:
+                    ensure_dependency(
+                        package_name="segment_anything",
+                        git_url="https://github.com/facebookresearch/segment-anything.git",
+                        optional=False,
+                    )
+                except ImportError:
+                    raise ModelLoadError(
+                        "SAM v1 not found. Install it with:\n"
+                        "  pip install git+https://github.com/facebookresearch/segment-anything.git"
+                    )
+                
                 from segmentor.backends.torch_sam_v1 import TorchSAMv1Backend
-
                 self.backend = TorchSAMv1Backend(self.config)
+                
             elif backend_key == "torch_sam_v2":
+                # Check if SAM v2 is installed
+                try:
+                    ensure_dependency(
+                        package_name="sam2",
+                        git_url="https://github.com/facebookresearch/segment-anything-2.git",
+                        optional=False,
+                    )
+                except ImportError:
+                    raise ModelLoadError(
+                        "SAM v2 not found. Install it with:\n"
+                        "  pip install git+https://github.com/facebookresearch/segment-anything-2.git"
+                    )
+                
                 from segmentor.backends.torch_sam_v2 import TorchSAMv2Backend
-
                 self.backend = TorchSAMv2Backend(self.config)
             elif backend_key == "onnx_sam_v1":
                 from segmentor.backends.onnx_sam_v1 import ONNXSAMv1Backend
@@ -288,6 +314,87 @@ class Segmentor:
                 )
                 return [merged_result]
 
+        return results
+
+    def segment_batch(
+        self,
+        image: np.ndarray | Image.Image | bytes | str | Path,
+        boxes: list[tuple[int, int, int, int]] | None = None,
+        points: list[list[tuple[int, int, int]]] | None = None,
+        *,
+        output_formats: list[str] | None = None,
+        return_overlay: bool = False,
+    ) -> list[SegmentationResult]:
+        """Segment multiple objects in the same image efficiently.
+        
+        Args:
+            image: Input image
+            boxes: List of bounding boxes [(x1,y1,x2,y2), ...]
+            points: List of point prompts [[(x,y,label), ...], ...]
+            output_formats: List of output formats
+            return_overlay: Whether to return overlay
+            
+        Returns:
+            List of SegmentationResult, one per prompt
+            
+        Example:
+            >>> boxes = [(100,100,300,300), (400,200,600,500)]
+            >>> results = seg.segment_batch(image, boxes=boxes)
+            >>> print(f"Segmented {len(results)} objects")
+        """
+        start_time = time.time()
+        
+        # Load image once
+        img_array = load_image(image)
+        
+        if output_formats is None:
+            output_formats = self.config.outputs.default_formats
+        
+        if self.backend is None:
+            raise BackendError("Backend not loaded")
+        
+        results = []
+        
+        # Process boxes in batch
+        if boxes:
+            # Validate all boxes first
+            for box in boxes:
+                self._validate_box(box, img_array.shape)
+            
+            # Backend batch inference
+            masks, scores = self.backend.infer_from_boxes_batch(img_array, boxes)
+            
+            for mask, score in zip(masks, scores):
+                mask = self._postprocess_mask(mask, img_array.shape)
+                result = self._create_result(
+                    mask=mask,
+                    score=score,
+                    output_formats=output_formats,
+                    latency_ms=(time.time() - start_time) * 1000,
+                    request_id=str(uuid.uuid4()),
+                )
+                results.append(result)
+        
+        # Process points in batch
+        if points:
+            # Validate all points first
+            for point_list in points:
+                self._validate_points(point_list, img_array.shape)
+            
+            # Backend batch inference
+            masks, scores = self.backend.infer_from_points_batch(img_array, points)
+            
+            for mask, score in zip(masks, scores):
+                mask = self._postprocess_mask(mask, img_array.shape)
+                result = self._create_result(
+                    mask=mask,
+                    score=score,
+                    output_formats=output_formats,
+                    latency_ms=(time.time() - start_time) * 1000,
+                    request_id=str(uuid.uuid4()),
+                )
+                results.append(result)
+        
         return results
 
     def warmup(self, image_size: tuple[int, int] | None = None) -> None:
