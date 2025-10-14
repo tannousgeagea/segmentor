@@ -1,4 +1,4 @@
-# Segmentor
+# Perceptra Seg
 
 Production-grade segmentation tool powered by Segment Anything Models (SAM v1 & v2).
 
@@ -16,13 +16,13 @@ Production-grade segmentation tool powered by Segment Anything Models (SAM v1 & 
 
 ```bash
 # Basic installation with PyTorch backend
-pip install segmentor[torch]
+pip install perceptra-seg[torch]
 
 # With FastAPI server
-pip install segmentor[server,torch]
+pip install perceptra-seg[server,torch]
 
 # All features
-pip install segmentor[all]
+pip install perceptra-seg[all]
 ```
 
 ## Quick Start
@@ -177,7 +177,7 @@ Weights are downloaded to `~/.cache/segmentor/` on first use.
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/segmentor.git
+git clone https://github.com/tannousgeagea/perceptra-seg.git
 cd segmentor
 
 # Install in development mode
@@ -419,7 +419,7 @@ Test coverage includes:
 - Use FP16 precision
 
 ### Import errors
-- Ensure correct extras installed: `pip install segmentor[torch]`
+- Ensure correct extras installed: `pip install perceptra-seg[torch]`
 - For SAM v1: `pip install git+https://github.com/facebookresearch/segment-anything.git`
 - For SAM v2: `pip install git+https://github.com/facebookresearch/segment-anything-2.git`
 
@@ -479,8 +479,8 @@ If you use this tool in research, please cite the original SAM papers:
 
 ## Contact
 
-- Issues: https://github.com/yourusername/segmentor/issues
-- Discussions: https://github.com/yourusername/segmentor/discussions
+- Issues: https://github.com/tannousgeagea/perceptra-seg/issues
+- Discussions: https://github.com/tannousgeagea/perceptra-seg/discussions
 - Email: team@example.com
 
 ---
@@ -492,7 +492,7 @@ A modular, high-performance segmentation library and microservice powered by Seg
 ## Project Structure
 
 ```
-segmentor/
+perceptra-seg/
 ├── pyproject.toml
 ├── README.md
 ├── config.yaml
@@ -502,7 +502,7 @@ segmentor/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml
-├── segmentor/
+├── perceptra_seg/
 │   ├── __init__.py
 │   ├── core.py
 │   ├── config.py
@@ -549,8 +549,8 @@ segmentor/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/segmentor.git
-cd segmentor
+git clone https://github.com/tannousgeagea/perceptra-seg.git
+cd perceptra-seg
 
 # Install in editable mode with all dependencies
 pip install -e .[all]
@@ -559,32 +559,32 @@ pip install -e .[all]
 pre-commit install
 ```
 
-### Using Segmentor in Your Project
+### Using perceptra-seg in Your Project
 
 **Install from PyPI (when published)**:
 ```bash
-pip install segmentor[torch]
+pip install perceptra-seg[torch]
 ```
 
 **Install from GitHub**:
 ```bash
-pip install git+https://github.com/yourusername/segmentor.git
+pip install git+https://github.com/tannousgeagea/perceptra-seg.git
 ```
 
 **Install specific version**:
 ```bash
-pip install segmentor[torch]==0.1.0
+pip install perceptra-seg[torch]==0.1.0
 ```
 
 **Add to requirements.txt**:
 ```
-segmentor[torch]>=0.1.0
+perceptra-seg[torch]>=0.1.0
 ```
 
 **Add to pyproject.toml**:
 ```toml
 dependencies = [
-    "segmentor[torch]>=0.1.0",
+    "perceptra-seg[torch]>=0.1.0",
 ]
 ```
 
