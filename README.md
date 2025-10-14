@@ -30,7 +30,7 @@ pip install segmentor[all]
 ### Python SDK
 
 ```python
-from segmentor import Segmentor
+from perceptra_seg import Segmentor
 import numpy as np
 
 # Initialize
@@ -592,7 +592,7 @@ dependencies = [
 
 ```python
 # Add to your project
-from segmentor import Segmentor
+from perceptra_seg import Segmentor
 
 class MyImageProcessor:
     def __init__(self):

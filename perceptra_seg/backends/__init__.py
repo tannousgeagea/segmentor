@@ -1,5 +1,5 @@
 """Backend implementations for SAM models."""
 
-from segmentor.backends.base import BaseSAMBackend
+from perceptra_seg.backends.base import BaseSAMBackend
 
 __all__ = ["BaseSAMBackend"]

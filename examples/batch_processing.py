@@ -9,7 +9,7 @@ from typing import Iterator
 import numpy as np
 from PIL import Image
 
-from segmentor import Segmentor
+from perceptra_seg import Segmentor
 
 
 def generate_test_images(count: int = 5) -> Iterator[tuple[str, np.ndarray]]:

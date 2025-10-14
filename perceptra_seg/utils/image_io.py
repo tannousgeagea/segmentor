@@ -7,7 +7,7 @@ import numpy as np
 import requests
 from PIL import Image
 
-from segmentor.exceptions import ImageLoadError
+from perceptra_seg.exceptions import ImageLoadError
 
 
 def load_image(

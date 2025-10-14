@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 
-from segmentor.config import SegmentorConfig
-from segmentor.backends.torch_sam_v1 import TorchSAMv1Backend
+from perceptra_seg.config import SegmentorConfig
+from perceptra_seg.backends.torch_sam_v1 import TorchSAMv1Backend
 
 
 def test_torch_sam_v1_backend_init() -> None:
@@ -35,7 +35,7 @@ def test_torch_sam_v1_checkpoint_path_resolution() -> None:
 )
 def test_backend_inference(config: SegmentorConfig) -> None:
     """Test backend inference (if PyTorch available)."""
-    from segmentor.backends.torch_sam_v1 import TorchSAMv1Backend
+    from perceptra_seg.backends.torch_sam_v1 import TorchSAMv1Backend
     
     backend = TorchSAMv1Backend(config)
     backend.load()

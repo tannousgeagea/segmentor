@@ -7,8 +7,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from segmentor import Segmentor, SegmentorConfig
-from segmentor.utils.mask_utils import mask_to_png_bytes
+from perceptra_seg import Segmentor, SegmentorConfig
+from perceptra_seg.utils.mask_utils import mask_to_png_bytes
 
 
 def segment_box_command(args: argparse.Namespace) -> None:

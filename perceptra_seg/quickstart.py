@@ -12,7 +12,7 @@ def main() -> None:
 
     # Check imports
     try:
-        from segmentor import Segmentor, SegmentorConfig
+        from perceptra_seg import Segmentor, SegmentorConfig
 
         print("✓ Segmentor package imported successfully")
     except ImportError as e:

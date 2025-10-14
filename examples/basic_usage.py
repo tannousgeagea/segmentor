@@ -6,7 +6,7 @@ This example shows how to segment objects using bounding boxes and points.
 import numpy as np
 from PIL import Image
 
-from segmentor import Segmentor
+from perceptra_seg import Segmentor
 
 
 def main() -> None:

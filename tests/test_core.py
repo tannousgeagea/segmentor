@@ -3,8 +3,8 @@
 import numpy as np
 import pytest
 
-from segmentor import Segmentor, SegmentorConfig
-from segmentor.exceptions import InvalidPromptError
+from perceptra_seg import Segmentor, SegmentorConfig
+from perceptra_seg.exceptions import InvalidPromptError
 
 
 def test_segmentor_initialization(config: SegmentorConfig) -> None:

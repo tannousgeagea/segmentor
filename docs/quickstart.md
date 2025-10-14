@@ -20,7 +20,7 @@ This will check your installation and run a basic test.
 ### 2. Basic Usage
 
 ```python
-from segmentor import Segmentor
+from perceptra_seg import Segmentor
 from PIL import Image
 
 # Initialize
@@ -87,7 +87,7 @@ curl http://localhost:8080/v1/healthz
 ### Example 1: Batch Processing
 
 ```python
-from segmentor import Segmentor
+from perceptra_seg import Segmentor
 from pathlib import Path
 
 seg = Segmentor(backend="torch", device="cuda")
@@ -142,7 +142,7 @@ Path("output_mask.png").write_bytes(mask_bytes)
 ### Example 3: Multiple Objects
 
 ```python
-from segmentor import Segmentor
+from perceptra_seg import Segmentor
 
 seg = Segmentor(backend="torch", device="cuda")
 

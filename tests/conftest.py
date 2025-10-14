@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from segmentor import Segmentor, SegmentorConfig
+from perceptra_seg import Segmentor, SegmentorConfig
 
 
 @pytest.fixture

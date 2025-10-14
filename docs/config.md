@@ -307,7 +307,7 @@ python -m segmentor.quickstart
 
 # 3. Test SDK
 python -c "
-from segmentor import Segmentor
+from perceptra_seg import Segmentor
 import numpy as np
 
 seg = Segmentor(backend='torch', device='cpu')

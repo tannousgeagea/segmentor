@@ -1,7 +1,7 @@
 # test_kwargs_handling.py
 """Test that kwargs are properly handled in Segmentor initialization."""
 
-from segmentor import Segmentor
+from perceptra_seg import Segmentor
 
 def test_all_initialization_methods():
     """Test various ways to initialize Segmentor."""
@@ -56,7 +56,7 @@ def test_all_initialization_methods():
     
     # Method 4: Full config object
     print("\n4. Config object:")
-    from segmentor import SegmentorConfig
+    from perceptra_seg import SegmentorConfig
     config = SegmentorConfig()
     config.model.name = "sam_v1"
     config.runtime.device = "cpu"

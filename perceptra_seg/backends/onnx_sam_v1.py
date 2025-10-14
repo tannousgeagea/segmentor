@@ -5,8 +5,8 @@ import logging
 import numpy as np
 
 from typing import Any
-from segmentor.config import SegmentorConfig
-from segmentor.exceptions import BackendError, ModelLoadError
+from perceptra_seg.config import SegmentorConfig
+from perceptra_seg.exceptions import BackendError, ModelLoadError
 
 logger = logging.getLogger(__name__)
 

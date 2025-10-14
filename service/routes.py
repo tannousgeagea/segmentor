@@ -8,7 +8,7 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from pydantic import BaseModel, Field
 
-from segmentor.exceptions import InvalidPromptError, SegmentorError
+from perceptra_seg.exceptions import InvalidPromptError, SegmentorError
 
 logger = logging.getLogger(__name__)
 

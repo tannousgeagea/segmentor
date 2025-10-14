@@ -2,8 +2,8 @@
 
 import numpy as np
 
-from segmentor.utils.image_io import load_image
-from segmentor.utils.mask_utils import (
+from perceptra_seg.utils.image_io import load_image
+from perceptra_seg.utils.mask_utils import (
     apply_morphology,
     mask_to_png_bytes,
     mask_to_polygons,

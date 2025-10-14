@@ -4,7 +4,7 @@ from typing import Protocol, runtime_checkable
 
 import numpy as np
 
-from segmentor.config import SegmentorConfig
+from perceptra_seg.config import SegmentorConfig
 
 
 @runtime_checkable

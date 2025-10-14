@@ -10,14 +10,14 @@ from typing import Any, Literal
 import numpy as np
 from PIL import Image
 
-from segmentor.backends.base import BaseSAMBackend
-from segmentor.config import SegmentorConfig
-from segmentor.exceptions import BackendError, InvalidPromptError, ModelLoadError
-from segmentor.models import SegmentationResult
-from segmentor.utils.cache import EmbeddingCache
-from segmentor.utils.image_io import load_image
-from segmentor.utils.dependency_check import ensure_dependency
-from segmentor.utils.mask_utils import (
+from perceptra_seg.backends.base import BaseSAMBackend
+from perceptra_seg.config import SegmentorConfig
+from perceptra_seg.exceptions import BackendError, InvalidPromptError, ModelLoadError
+from perceptra_seg.models import SegmentationResult
+from perceptra_seg.utils.cache import EmbeddingCache
+from perceptra_seg.utils.image_io import load_image
+from perceptra_seg.utils.dependency_check import ensure_dependency
+from perceptra_seg.utils.mask_utils import (
     apply_morphology,
     mask_to_png_bytes,
     mask_to_polygons,
@@ -110,7 +110,7 @@ class Segmentor:
                         "  pip install git+https://github.com/facebookresearch/segment-anything.git"
                     )
                 
-                from segmentor.backends.torch_sam_v1 import TorchSAMv1Backend
+                from perceptra_seg.backends.torch_sam_v1 import TorchSAMv1Backend
                 self.backend = TorchSAMv1Backend(self.config)
                 
             elif backend_key == "torch_sam_v2":
@@ -127,14 +127,14 @@ class Segmentor:
                         "  pip install git+https://github.com/facebookresearch/segment-anything-2.git"
                     )
                 
-                from segmentor.backends.torch_sam_v2 import TorchSAMv2Backend
+                from perceptra_seg.backends.torch_sam_v2 import TorchSAMv2Backend
                 self.backend = TorchSAMv2Backend(self.config)
             elif backend_key == "onnx_sam_v1":
-                from segmentor.backends.onnx_sam_v1 import ONNXSAMv1Backend
+                from perceptra_seg.backends.onnx_sam_v1 import ONNXSAMv1Backend
 
                 self.backend = ONNXSAMv1Backend(self.config)
             elif backend_key == "onnx_sam_v2":
-                from segmentor.backends.onnx_sam_v2 import ONNXSAMv2Backend
+                from perceptra_seg.backends.onnx_sam_v2 import ONNXSAMv2Backend
 
                 self.backend = ONNXSAMv2Backend(self.config)
             else:

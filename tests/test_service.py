@@ -5,7 +5,7 @@ import base64
 import pytest
 from fastapi.testclient import TestClient
 
-from segmentor.config import SegmentorConfig
+from perceptra_seg.config import SegmentorConfig
 from service.main import create_app
 
 

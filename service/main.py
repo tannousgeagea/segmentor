@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from prometheus_client import make_asgi_app
 
-from segmentor.config import SegmentorConfig
+from perceptra_seg.config import SegmentorConfig
 from service.middleware import LoggingMiddleware
 from service.routes import router
 
@@ -60,7 +60,7 @@ def create_app(config: SegmentorConfig | None = None) -> FastAPI:
     @app.on_event("startup")
     async def startup_event() -> None:
         """Initialize segmentor on startup."""
-        from segmentor import Segmentor
+        from perceptra_seg import Segmentor
 
         logger.info("Initializing Segmentor...")
         app.state.segmentor = Segmentor(config=config)

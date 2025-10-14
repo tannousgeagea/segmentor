@@ -74,7 +74,7 @@ Documentation = "https://perceptra-seg.readthedocs.io"
 Repository = "https://github.com/tannousgeagea/perceptra-seg"
 
 [tool.setuptools.packages.find]
-include = ["perceptra-seg*", "service*"]
+include = ["perceptra_seg*", "service*"]
 
 [tool.black]
 line-length = 100
